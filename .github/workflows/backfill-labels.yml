@@ -1,0 +1,64 @@
+name: Backfill Shared Labels
+
+on:
+  workflow_call:
+    inputs:
+      dry_run:
+        description: Preview label changes without applying them.
+        required: false
+        default: true
+        type: boolean
+      repository:
+        description: Repository to backfill. Defaults to the caller repository.
+        required: false
+        default: ""
+        type: string
+      max_items:
+        description: Maximum number of open issues and PRs to scan.
+        required: false
+        default: 100
+        type: number
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview label changes without applying them.
+        required: false
+        default: true
+        type: boolean
+      repository:
+        description: Repository to backfill. Defaults to the current repository.
+        required: false
+        default: ""
+        type: string
+      max_items:
+        description: Maximum number of open issues and PRs to scan.
+        required: false
+        default: 100
+        type: number
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout shared automation repository
+        uses: actions/checkout@v4
+        with:
+          repository: JuliaQUBO/.github
+          ref: main
+          path: shared
+
+      - name: Backfill labels
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          INPUT_REPOSITORY: ${{ inputs.repository }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          MAX_ITEMS: ${{ inputs.max_items }}
+        run: |
+          bash shared/.github/scripts/backfill-labels.sh

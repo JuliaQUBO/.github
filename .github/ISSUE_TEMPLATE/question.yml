@@ -1,0 +1,19 @@
+name: Question / support
+description: Ask a usage or support question.
+title: "[question] "
+labels:
+  - question
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What do you need help understanding or doing?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Include relevant code, model snippets, versions, or error text.
+      render: shell
