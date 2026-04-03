@@ -1,0 +1,66 @@
+name: Backfill Shared Labels
+
+on:
+  workflow_call:
+    inputs:
+      dry_run:
+        description: Preview label changes without applying them.
+        required: false
+        default: true
+        type: boolean
+      max_items:
+        description: Maximum number of open issues and PRs to scan.
+        required: false
+        default: 100
+        type: number
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview label changes without applying them.
+        required: false
+        default: true
+        type: boolean
+      max_items:
+        description: Maximum number of open issues and PRs to scan.
+        required: false
+        default: 100
+        type: number
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Derive shared automation ref
+        id: workflow_ref
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+          FALLBACK_REF: ${{ github.sha }}
+        run: |
+          if [[ -n "${WORKFLOW_REF}" ]]; then
+            echo "ref=${WORKFLOW_REF##*@}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${FALLBACK_REF}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout shared automation repository
+        uses: actions/checkout@v4
+        with:
+          repository: JuliaQUBO/.github
+          ref: ${{ steps.workflow_ref.outputs.ref }}
+          path: shared
+
+      - name: Backfill labels
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          MAX_ITEMS: ${{ inputs.max_items }}
+        run: |
+          bash shared/.github/scripts/backfill-labels.sh

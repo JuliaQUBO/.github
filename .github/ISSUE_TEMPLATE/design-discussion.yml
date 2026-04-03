@@ -1,0 +1,25 @@
+name: Design discussion
+description: Start a design, architecture, or RFC-style discussion.
+title: "[design] "
+labels:
+  - needs-design
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem or decision needs discussion?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Initial proposal
+      description: Describe the direction you want reviewed.
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Tradeoffs
+      description: Risks, compatibility concerns, or alternatives.

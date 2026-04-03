@@ -1,0 +1,24 @@
+name: Documentation issue
+description: Report missing, incorrect, or confusing docs, examples, badges, or citation metadata.
+title: "[docs] "
+labels:
+  - documentation
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Documentation problem
+      description: What is unclear, missing, or incorrect?
+    validations:
+      required: true
+  - type: textarea
+    id: location
+    attributes:
+      label: Affected location
+      description: Link the page, file, badge, or example if you can.
+      placeholder: README section, docs URL, file path, or screenshot context
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix
+      description: Optional wording or example of the change you want.
