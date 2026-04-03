@@ -49,12 +49,12 @@ def classify_issue_text(text: str) -> str:
     lowered = text.lower()
     if re.search(r"(docs?|documentation|readme|badge|logo|citation|example|tutorial|typo)", lowered):
         return "documentation"
-    if re.search(r"(\?|how\s+can|can\s+i|would\s+like\s+to\s+know|question|support|help)", lowered):
-        return "question"
     if re.search(r"(bug|broken|error|fails?|failing|doesn.t\s+work|incorrect|regression|crash|exception|traceback)", lowered):
         return "bug"
     if re.search(r"(feature|enhancement|implement|support\s+for|proposal|idea|would\s+like|should\s+be|request)", lowered):
         return "enhancement"
+    if re.search(r"(\?|how\s+can|can\s+i|would\s+like\s+to\s+know|question|help)", lowered):
+        return "question"
     return ""
 
 

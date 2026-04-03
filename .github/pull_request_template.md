@@ -4,10 +4,23 @@
 
 ## Maintainer Triage
 
-- Change type: `bug fix` / `documentation` / `enhancement` / `refactor` / `maintenance`
-- Docs-only: `yes` / `no`
-- Release impact: `none` / `patch` / `minor` / `blocking`
-- Needs design review: `yes` / `no`
+- Change type:
+  - [ ] Bug fix
+  - [ ] Documentation
+  - [ ] Enhancement
+  - [ ] Refactor
+  - [ ] Maintenance
+- Docs-only:
+  - [ ] Yes
+  - [ ] No
+- Release impact:
+  - [ ] None
+  - [ ] Patch
+  - [ ] Minor
+  - [ ] Blocking
+- Needs design review:
+  - [ ] Yes
+  - [ ] No
 
 ## Verification
 

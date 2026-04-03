@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: JuliaQUBO documentation
-    url: https://juliaqubo.github.io/QUBO.jl/QUBO.jl/dev/
+    url: https://juliaqubo.github.io/QUBO.jl/dev/
     about: Check the docs before opening a support issue.
