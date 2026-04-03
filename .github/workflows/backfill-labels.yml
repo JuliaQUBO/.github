@@ -8,11 +8,6 @@ on:
         required: false
         default: true
         type: boolean
-      repository:
-        description: Repository to backfill. Defaults to the caller repository.
-        required: false
-        default: ""
-        type: string
       max_items:
         description: Maximum number of open issues and PRs to scan.
         required: false
@@ -25,11 +20,6 @@ on:
         required: false
         default: true
         type: boolean
-      repository:
-        description: Repository to backfill. Defaults to the current repository.
-        required: false
-        default: ""
-        type: string
       max_items:
         description: Maximum number of open issues and PRs to scan.
         required: false
@@ -39,17 +29,30 @@ on:
 permissions:
   contents: read
   issues: write
-  pull-requests: write
+  pull-requests: read
 
 jobs:
   backfill:
     runs-on: ubuntu-latest
     steps:
+      - name: Derive shared automation ref
+        id: workflow_ref
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+          FALLBACK_REF: ${{ github.sha }}
+        run: |
+          if [[ -n "${WORKFLOW_REF}" ]]; then
+            echo "ref=${WORKFLOW_REF##*@}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${FALLBACK_REF}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout shared automation repository
         uses: actions/checkout@v4
         with:
           repository: JuliaQUBO/.github
-          ref: main
+          ref: ${{ steps.workflow_ref.outputs.ref }}
           path: shared
 
       - name: Backfill labels
@@ -57,7 +60,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
-          INPUT_REPOSITORY: ${{ inputs.repository }}
           DRY_RUN: ${{ inputs.dry_run }}
           MAX_ITEMS: ${{ inputs.max_items }}
         run: |

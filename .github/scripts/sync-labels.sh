@@ -19,6 +19,26 @@ def gh(*args: str) -> str:
     return result.stdout
 
 
+def fetch_existing_labels(target_repository: str) -> list[dict]:
+    labels: list[dict] = []
+    page = 1
+
+    while True:
+        page_labels = json.loads(
+            gh("api", f"repos/{target_repository}/labels?per_page=100&page={page}")
+        )
+        if not page_labels:
+            break
+
+        labels.extend(page_labels)
+        if len(page_labels) < 100:
+            break
+
+        page += 1
+
+    return labels
+
+
 target_repository = os.environ.get("INPUT_REPOSITORY") or os.environ.get("GITHUB_REPOSITORY")
 if not target_repository:
     raise SystemExit("INPUT_REPOSITORY or GITHUB_REPOSITORY is required")
@@ -29,7 +49,7 @@ dry_run = os.environ.get("DRY_RUN", "false").lower() == "true"
 with open(labels_file, "r", encoding="utf-8") as fh:
     label_definitions = json.load(fh)
 
-existing_labels = json.loads(gh("api", f"repos/{target_repository}/labels?per_page=100"))
+existing_labels = fetch_existing_labels(target_repository)
 existing_by_name = {label["name"]: label for label in existing_labels}
 
 created = 0

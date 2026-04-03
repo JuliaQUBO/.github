@@ -8,11 +8,6 @@ on:
         required: false
         default: false
         type: boolean
-      repository:
-        description: Repository to sync. Defaults to the caller repository.
-        required: false
-        default: ""
-        type: string
   workflow_dispatch:
     inputs:
       dry_run:
@@ -20,26 +15,33 @@ on:
         required: false
         default: false
         type: boolean
-      repository:
-        description: Repository to sync. Defaults to the current repository.
-        required: false
-        default: ""
-        type: string
 
 permissions:
   contents: read
   issues: write
-  pull-requests: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      - name: Derive shared automation ref
+        id: workflow_ref
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+          FALLBACK_REF: ${{ github.sha }}
+        run: |
+          if [[ -n "${WORKFLOW_REF}" ]]; then
+            echo "ref=${WORKFLOW_REF##*@}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${FALLBACK_REF}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout shared automation repository
         uses: actions/checkout@v4
         with:
           repository: JuliaQUBO/.github
-          ref: main
+          ref: ${{ steps.workflow_ref.outputs.ref }}
           path: shared
 
       - name: Sync labels
@@ -47,7 +49,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
-          INPUT_REPOSITORY: ${{ inputs.repository }}
           DRY_RUN: ${{ inputs.dry_run }}
           LABELS_FILE: shared/.github/labels/shared-labels.json
         run: |
