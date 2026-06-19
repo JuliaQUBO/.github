@@ -1,0 +1,12 @@
+{
+  "name": "Julia TagBot",
+  "description": "Create tags and GitHub releases for Julia package registrations.",
+  "iconName": "tagbot",
+  "categories": [
+    "Automation",
+    "Publishing"
+  ],
+  "filePatterns": [
+    "Project.toml"
+  ]
+}
