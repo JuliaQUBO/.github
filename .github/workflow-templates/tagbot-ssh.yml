@@ -5,6 +5,9 @@ on:
     types:
       - created
   workflow_dispatch:
+    inputs:
+      lookback:
+        default: "3"
 
 permissions:
   contents: write
@@ -19,4 +22,5 @@ jobs:
       - uses: JuliaRegistries/TagBot@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          lookback: ${{ github.event.inputs.lookback || '3' }}
           ssh: ${{ secrets.SSH_KEY }}

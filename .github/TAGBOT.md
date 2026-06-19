@@ -13,6 +13,10 @@ Use `tagbot.yml` for most Julia packages. It uses the repository
   fails.
 - `pull-requests: read` to read pull request metadata for changelogs.
 
+This is the JuliaQUBO standard for package TagBot workflows. Do not downscope
+`issues` to `read`, because TagBot needs write access when it creates a
+manual-intervention issue after a release automation failure.
+
 ## SSH Template
 
 Use `tagbot-ssh.yml` only when the tag push itself must trigger downstream

@@ -37,6 +37,11 @@ class WorkflowContractTests(unittest.TestCase):
                 self.assertIn("issues: write", content)
                 self.assertIn("pull-requests: read", content)
                 self.assertIn("token: ${{ secrets.GITHUB_TOKEN }}", content)
+                self.assertIn('default: "3"', content)
+                self.assertIn(
+                    "lookback: ${{ github.event.inputs.lookback || '3' }}",
+                    content,
+                )
 
     def test_only_ssh_tagbot_template_uses_deploy_key(self) -> None:
         token_only = (WORKFLOW_TEMPLATES / "tagbot.yml").read_text(encoding="utf-8")

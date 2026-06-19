@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title>TagBot</title>
+  <title id="title">TagBot</title>
   <path fill="#3b5bdb" d="M7 9h24l26 26-22 22L9 31V7z"/>
   <path fill="#ffffff" d="M20 25a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-3a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
   <path fill="#ffffff" d="M32 25h13v4H32zm0 9h18v4H32zm0 9h10v4H32z"/>
