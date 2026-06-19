@@ -1,0 +1,12 @@
+{
+  "name": "Julia TagBot with SSH",
+  "description": "Create Julia package tags and releases with an SSH deploy key so tag pushes can trigger downstream workflows.",
+  "iconName": "tagbot",
+  "categories": [
+    "Automation",
+    "Publishing"
+  ],
+  "filePatterns": [
+    "Project.toml"
+  ]
+}
